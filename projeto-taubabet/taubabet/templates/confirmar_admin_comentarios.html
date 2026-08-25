@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - Cadastro{% endblock %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="config-card1 p-5 text-white ">
+
+        <h1>Visualizar Comentários</h1>
+
+        <form action="{{ url_for('entrar_admin', pgn='comentario') }}" method="POST">
+            <div class="mb-3">
+                <label>Confirme sua senha VIP</label>
+                <input type="password" class="form-control" maxlength="19" placeholder="Digite sua senha" name="senha" required>
+            </div>
+
+            <input type="submit" value="Enviar" class="btn btn-primary sub-forma-de-pagamento">
+        </form>
+        
+        <div class="text-center">
+            <a href="{{ url_for('pagina_configuracoes') }}">
+                <button class=" btn sub-cancelar2">CANCELAR</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

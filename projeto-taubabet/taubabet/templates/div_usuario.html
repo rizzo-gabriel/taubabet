@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - Perfil do Usuário{% endblock %}
+
+{% block content %}
+<div class="container mt-4 text-white">
+    <h2>Meu Perfil</h2>
+    <hr>
+
+    <form action="{{ url_for('atualizar_perfil') }}" method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <!-- Exibição da foto atual ou padrão -->
+                <div class="mb-3">
+                    <img src="{{ usuario.foto or '/static/img/default-user.webp' }}" 
+                         alt="Foto de Perfil" class="img-thumbnail" style="width: 200px;">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="foto" class="form-label">Alterar Foto</label>
+                    <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <label class="mb-2" for="nome" class="form-control">Nome completo</label>
+                    <input type="text" class="form-control" placeholder="Digite seu nome" name="nome" id="nome" required value="{{usuario.nome_completo}}">
+                </div>
+
+                <div class="mb-4">
+                    <label class="mb-2" for="saldo">Saldo</label>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="saldo" id="saldo" readonly value=" R$ {{ '%.2f'|format(usuario.saldo|float)|replace('.', ',') }}">
+
+                        <a href="{{ url_for('pagina_adicionar_saldo') }}" class="add-saldo">
+                            <button class="btn btn-primary" type="button">
+                                Adicionar saldo
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="mb-2" for="cpf">CPF</label>
+                    <input type="text" class="form-control" placeholder="000.000.000-00" name="cpf" id="cpf" required value="{{usuario.cpf}}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="mb-2" for="email">E-mail</label>
+                    <input type="email" class="form-control" placeholder="Digite seu e-mail" name="email" id="email" readonly value="{{usuario.email}}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="mb-2" for="senha">Senha</label>
+                    <input type="text" class="form-control" placeholder="Digite sua senha" name="senha" id="senha" required value="{{usuario.senha}}">
+                </div>
+
+                <div class="mb-4">
+                    <label class="mb-2" for="telefone">Telefone</label>
+                    <input type="text" class="form-control" placeholder="(11) 99999-9999" name="telefone" id="telefone" required value="{{usuario.telefone}}">
+                </div>
+                
+                <div>
+                    <button type="submit" class="btn btn-primary ">Salvar Alterações  </button>
+                    <a href="/pagina-configuracoes" class="btn btn-voltar">  Voltar</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

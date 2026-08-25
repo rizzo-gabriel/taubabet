@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - Página principal{% endblock %}
+
+{% block content %}
+
+<!-- Fotinha usuário -->
+<button class="btn position-absolute top-0 start-0 m-4 text-decoration-none fotinha">
+  <a href="{{ url_for('pagina_visualizar_perfil') }}" class="tw">
+    <img src="{{ usuario.foto or '/static/img/default-user.webp' }}" alt="Foto de Perfil" style="width: 150px;">
+    <legend class="tw">{{usuario.nome_completo}}</legend>
+  </a>
+</button>
+<br><br>
+<div class="container container-main">
+
+    <!-- TOPO -->
+    <div class="text-center mb-5">
+
+      <img src="static/img/logo.png" class="logo3 mb-3">
+
+      <h1 class="tw fw-bold">
+        TaubaBet {{saldo_negativo}}
+      </h1>
+
+      <p class="tw opacity-75">
+        Escolha uma opção 
+      </p>
+
+    </div>
+
+
+    <!-- Engrenagem -->
+    <button class="btn position-absolute top-0 end-0 m-4">
+      <a href="{{ url_for('pagina_configuracoes') }}">
+        <img src="static/img/engrenagem.webp" width="35">
+      </a>
+    </button>
+
+    <!-- DUAS COLUNAS -->
+    <div class="row g-4">
+
+      <!-- APOSTAR -->
+      <div class="col-md-6">
+        <a href="{{ url_for('pagina_aposta') }}">
+          <div class="coluna apostar d-flex flex-column justify-content-center align-items-center text-center">
+            <img src="static/img/apostar.png" width="140" class="mb-4">
+            <h1 class="text-white fw-bold">
+              APOSTAR
+            </h1>
+            <p class="text-light fs-5">
+              Faça sua aposta do dia
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <!-- COMENTAR -->
+      <div class="col-md-6">
+        <a href="{{ url_for('pagina_comentario') }}">
+          <div class="coluna comentar d-flex flex-column justify-content-center align-items-center text-center">
+            <img src="static/img/blablabla.png" width="140" class="mb-4">
+            <h1 class="text-white fw-bold">
+              COMENTAR
+            </h1>
+            <p class="text-light fs-5">
+              Veja comentários e opiniões
+            </p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Botão sair -->
+    <div class="text-center mt-5">
+      <a href="{{ url_for('pagina_login') }}">
+        <button class="btn btn-sair text-white px-5 py-3 rounded-4 fw-bold">SAIR</button>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal fade" id="modalSaldo" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Saldo insuficiente</h5>
+            </div>
+
+            <div class="modal-body">
+                Você não possui saldo disponível para continuar. <br>Seu saldo: R$ {{saldo}},00
+            </div>
+
+            <div class="modal-footer">
+                <a href="{{ url_for('pagina_adicionar_saldo') }}" class="btn btn-primary">
+                    Adicionar saldo
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% if saldo_negativo %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = new bootstrap.Modal(
+        document.getElementById("modalSaldo"),
+        {
+            backdrop: 'static',
+            keyboard: false
+        }
+    );
+
+    modal.show();
+});
+</script>
+{% endif %}
+
+{% endblock %}

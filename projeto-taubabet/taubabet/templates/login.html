@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - LOGIN{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid tela-login">
+
+    <div class="painel-login">
+
+        <!-- LOGO -->
+        <div class="text-center mb-4">
+            <img src="/static/img/logo.png" width="110" class="mb-3">
+            <h1 class="text-white fw-bold">TAUBABET</h1>
+            <p class="text-light opacity-75">Entre na sua conta</p>
+        </div>
+
+        <!-- FORMULÁRIO Login-->
+        <form method="POST" action="{{ url_for('autenticar') }}">
+            <div class="mb-3">
+                <label class="form-label text-light">Email</label>
+                <input type="email" class="form-control input-login" name="email" id="email" placeholder="Digite seu E-mail" required>
+            </div>
+
+            
+            <div class="mb-4">
+                <label class="form-label text-light">Senha</label>
+                <input type="password" class="form-control input-login" name="senha" placeholder="Digite sua senha" required>
+            </div>
+
+            <div class="d-grid gap-2">
+                <a href="{{ url_for('pagina_login') }}"></a>
+                <button class="btn btn-login fw-bold">LOGAR</button>
+            </div>
+
+        </form>
+        <br>
+        <div class="botoes">
+            <!-- Botão Cadastrar -->
+            <a href="{{ url_for('pagina_cadastro') }}" class="text-decoration-none">
+                <button class="btn btn-cadastrar fw-bold">CADASTRAR</button>
+            </a>
+            <!-- BOTÃO Sair -->
+            <a href="{{ url_for('pagina_entrada') }}" class="text-decoration-none">
+                <button class="btn btn-sair fw-bold">SAIR</button>
+            </a>
+        </div>
+        
+                                                                                      
+    </div>
+
+</div>
+
+{% endblock %}

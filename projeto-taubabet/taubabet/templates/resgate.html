@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - Página de Resgate{% endblock %}
+
+{% block content %}
+
+<div class="container painel-resgate">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-6">
+
+            <div class="painel-aposta p-5">
+
+                <div class="text-center mb-4">
+
+                    <img src="/static/img/logo.png" class="logo2 mb-3">
+
+                    <h2 class="text-white fw-bold">
+                        Solicitar Resgate
+                    </h2>
+
+                    <p class="text-secondary">
+                        Informe o valor e os dados para receber seu prêmio.
+                    </p>
+                    <p style="color: red;">ATENÇÃO</p>
+                    <p  style="color: rgb(173, 91, 91); font-size: 8px;">A TAUBABET irá retirar <br>uma pequena comissão de 70% <br>dos seus ganhos como <br>agradecimento ao serviço.</p>
+
+                </div>
+
+                <form action="{{ url_for('resgatar') }}" method="POST">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Valor disponível
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control input-custom btn-resgate"
+                            value="R$ {{ saldo }}"
+                            disabled>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Valor do resgate
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control input-custom btn-resgate"
+                            name="valor"
+                            min="1"
+                            step="0.01"
+                            placeholder="Digite o valor" required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Senha de {{nome_usuario}}
+                        </label>
+
+                        <input
+                            type="password"
+                            class="form-control input-custom "
+                            name="senha"
+                            placeholder="Digite sua senha" required>
+                    </div>
+
+                    <div class="d-grid gap-3">
+
+                        <button class="btn btn-apostar py-3 fw-bold">
+
+                            Solicitar Resgate
+
+                        </button>
+
+                        <a href="/pagina-principal"
+                           class="btn btn-outline-light">
+
+                            Voltar
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

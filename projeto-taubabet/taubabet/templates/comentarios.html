@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - COMENTÁRIOS{% endblock %}
+
+{% block content %}
+
+<audio src="static/sounds/laugh_meme.mp3" id="laugh_meme"></audio>
+
+<div class="container-fluid py-4 px-4">
+
+    <!-- TOPO -->
+    <div class="text-center mb-5">
+        
+        <img src="/static/img/logo.png" width="120" class="mb-3">
+
+        <h1 class="tw fw-bold display-4">
+            Área de Comentários
+        </h1>
+
+        <p class="tw opacity-75 fs-5">
+            Resultados satisfatórios? Registre um comentário!
+        </p>
+
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+
+        <!-- COMENTÁRIOS -->
+        <div class="col-lg-6">
+
+            <div class="lista-comentarios p-3">
+
+                <h3 class="tw fw-bold mb-3">
+                    COMENTÁRIOS
+                </h3>
+
+                {% for comentario in lista_comentarios %}
+
+                <div class="comentario-card mb-2">
+
+                    <small class="text-info fw-bold">
+                        {{ comentario.titulo }} - {{comentario.usuario_que_comentou}} {{ comentario.data }}
+                    </small>
+
+                    <p class="text-white mb-1 mt-1">
+                        {{ comentario.descricao }}
+                    </p>
+
+                    {% if comentario.feedback != "" %}
+                        <p class="text-white mb-1 mt-1">
+                            {{ comentario.feedback }}
+                        </p>
+                    {% endif %}
+
+                    {% if comentario.denuncia != "" %}
+                        <p class="text-white mb-1 mt-1">
+                            {{ comentario.denuncia }}
+                        </p>
+                    {% endif %}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- FORMULÁRIO -->
+        <div class="col-lg-4">
+
+            <div class="painel-formulario p-3">
+
+                <h3 class="tw fw-bold mb-3">
+                    COMENTAR
+                </h3>
+                <form method="POST" action="{{ url_for('comentar', nome_usuario=nome_usuario) }}">
+                    <!-- TÍTULO -->
+                    <div class="mb-2">
+                        <label class="form-label text-light small" for="titulo">*Título</label>
+                        <input type="text" class="form-control input-comentario" name="titulo" id="titulo" placeholder="Título..." required>
+                    </div>
+
+                    <!-- DESCRIÇÃO -->
+                    <div class="mb-2">
+                        <label class="form-label text-light small" for="descricao">*Descrição</label>
+                        <input type="text" class="form-control input-comentario" name="descricao" id="descricao" placeholder="Digite..." required>
+                    </div>
+
+                     <!-- <div class="mb-2">
+                        <label for="data">Data de realização</label>
+                        <input type="date" name="data" id="data" class="form-control" required />
+                    </div> -->
+
+                    <!-- FEEDBACK -->
+                    <div class="mb-2">
+                        <label class="form-label text-light small" for="feedback">Feedback</label>
+                        <input type="text" class="form-control input-comentario" name="feedback" id="feedback" placeholder="Seu feedback...">
+                    </div>
+
+                    <!-- DENÚNCIA -->
+                    <div class="mb-3">
+                        <label class="form-label text-light small" for="denuncia">Denúncia</label>
+                        <input type="text" class="form-control input-comentario" name="denuncia" id="denuncia" placeholder="Relate algo...">
+                    </div>
+
+                    <!-- BOTÃO -->
+                    <div class="align-items-center mt-3">
+                        <button class="btn btn-enviar px-4 py-2 fw-bold">ENVIAR</button>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="mt-5">
+                <a href="{{ url_for('limpar') }}">
+                    <button class="btn tw px-5 py-3 rounded-4 fw-bold border 1px">Limpar Comentários</button>
+                </a>
+                <a onclick="tocar2()">
+                    <img src="static/img/sound_PNG.png" width="35">
+                </a>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{{ url_for('home') }}">
+                <button class="btn btn-sair text-white px-5 py-3 rounded-4 fw-bold">SAIR</button>
+            </a>
+        </div>
+        
+    </div>
+
+</div>
+
+{% endblock %}

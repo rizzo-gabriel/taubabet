@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - CONFIRMAR COMPRA{% endblock %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="config-card1 p-5 text-white">
+        <h1>PAGAR COM COMPROVANTE</h1>
+        <form id="formPix" action="{{ url_for('pagar_com_comprovante') }}" method="POST">
+
+            <div class="mb-3">
+                <label>Valor</label>
+                <input type="number" class="form-control" placeholder="R$ 50,00" name="valor" id="valor" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="foto" class="form-label">Selecionar Comprovante</label>
+                <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+            </div>
+
+            <button class="btn btn-success mt-4 w-100">
+                Pagar
+            </button>
+        
+        </form>
+
+        <br>
+
+        <div class="text-center">
+            <a href="{{ url_for('pagina_adicionar_saldo') }}">
+                <button class=" btn btn-primary">Voltar</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

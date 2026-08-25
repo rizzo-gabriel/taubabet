@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - Página de Entrada {% endblock %}
+ 
+{% block content %}
+
+  <img src="static/img/logo.png" class="burro-fundo">
+
+  <div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-start pt-5">
+      <div class="col-auto">
+        <div class="card login-card p-5 text-center">
+
+          <img src="static/img/logo.png" class="logo1 mx-auto mb-4">
+
+          <h1 class="text-white fw-bold mb-3">
+            TaubaBet
+          </h1>
+
+          <p class="text-light opacity-75 mb-5">
+            Dia de Sorte (ou Azar)
+          </p>
+
+        <a href="{{ url_for('pagina_login') }}">
+            <button class="btn btn-custom text-white w-100 py-3 rounded-4">
+                Entrar
+            </button>
+        </a>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

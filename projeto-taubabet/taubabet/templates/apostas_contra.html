@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - APOSTAS{% endblock %}
+
+{% block content %}
+
+<audio id="money_meme" src="/static/sounds/money_meme.mp3"></audio>
+
+<div class="container-fluid py-5 px-4">
+
+    <!-- TOPO -->
+    <div class="text-center mb-5">
+        
+        <img src="/static/img/logo.png" width="120" class="mb-3">
+
+        <h1 class="text-white fw-bold display-4">
+            Área de Apostas
+        </h1>
+
+        <p class="text-light opacity-75 fs-5">
+            Faça sua aposta e acompanhe os resultados
+        </p>
+
+    </div>
+
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="row g-4">
+
+        <!-- COLUNA ESQUERDA -->
+        <!-- RESULTADOS -->
+        <div class="col-lg-5">
+            <div class="painel-resultados-contra p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="text-white fw-bold">
+                        RESULTADOS
+                    </h2>
+                    <span class="badge bg-success fs-6">
+                        AO VIVO
+                    </span>
+                </div>
+
+                <!-- TABELA -->
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle">
+                        <thead>
+                            <tr class="text-info">
+                                <td>JOGADOR</td>
+                                <th>Jogo</th>
+                                <th>Resultado</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <div class="aposta">
+                                {% for aposta in lista_apostas %}
+                                    <tr>
+                                        <td>{{ aposta.usuario_que_apostou }}</td>
+                                        <td>{{ aposta.local }}</td>
+                                        <td>{{ aposta.resultado }}</td>
+                                        <td>{{ aposta.valor_formatado }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </div>
+                        </tbody>
+                    </table>
+                </div>
+
+                <a href="{{ url_for('pagina_resgate') }}"
+                    class="btn btn-outline-light btn-resgatar">
+                    RESGATAR
+                </a>
+            </div>
+
+        </div>
+
+        <!-- COLUNA DIREITA -->
+        <!-- FORMULÁRIO -->
+        <div class="col-lg-7">
+            <div class="painel-aposta p-5">
+                <h2 class="text-white fw-bold mb-4">
+                    FAZER APOSTA
+                </h2>
+
+                <a href="{{ url_for('pagina_aposta') }}">
+                    <button class="btn btn-dark">Nova Aposta / Apostar Contra</button>
+                </a>
+
+                <!-- OPCAO APOSTAR CONTRA -->
+                <div>
+                    <form action="{{ url_for('apostar_contra', nome_usuario=nome_usuario) }}">
+                        <div class="mb-4">
+                            <label class="form-label text-light fw-bold">
+                                Escolha a aposta para apostar contra
+                            </label>
+                            <select name="contra_aposta" class="form-select form-select-lg input-custom" required>
+                                <option value="" disabled selected>
+                                    Selecione uma aposta
+                                </option>
+
+                                {% for aposta in lista_apostas %}
+                                    <option value="{{ aposta.id }}">
+                                        {{ aposta.usuario_que_apostou }} - {{ aposta.local }} - {{ aposta.descricao }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <!-- VALOR -->
+                            <label class="form-label text-light fw-bold">
+                                Valor da contra aposta
+                            </label>
+
+                            <input type="number" name="valor-contra" class="input-aposta form-control form-control-lg input-custom" placeholder="Digite o valor da aposta..." required>
+                        </div>
+
+                        <div class="mb-4">
+                            <!-- DESCRIÇÃO -->
+                            <label class="form-label text-light fw-bold">
+                                Descrição
+                            </label>
+                            <textarea name="descricao-contra" class="input-aposta form-control input-custom" placeholder="Descreva sua contra aposta" required></textarea>
+                        </div>
+
+                        <!-- BOTÃO -->
+                        <div class="text-center mt-5">
+                            <button class="input-aposta-contra btn btn-apostar-contra px-5 py-3 fw-bold fs-5">
+                                ENVIAR APOSTA CONTRA
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="text-center mt-5">
+            <a href="{{ url_for('home') }}">
+                <button class="btn btn-sair text-white px-5 py-3 rounded-4 fw-bold">SAIR</button>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

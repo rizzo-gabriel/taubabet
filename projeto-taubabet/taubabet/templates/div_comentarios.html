@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - LISTA COMENTÁRIOS{% endblock %}
+
+{% block content %}
+
+<style>
+    thead{
+        font-size: x-large;
+        padding: 10px;
+        color: rgb(0, 175, 228);
+    }
+    td{
+        padding: 10px;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="config-card1 p-5 text-white ">
+        <h2 class="text-center">Lista de Comentários</h2>
+        <table>
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Título</td>
+                    <td>Descrição</td>
+                    <td>Feedback</td>
+                    <td>Denúncia</td>
+                    <td>Data</td>
+                    <td>Nome do Usuário</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for comentario in lista_comentarios %}
+                    <tr>
+                        <td>{{comentario.id}}</td>
+                        <td>{{comentario.titulo}}</td>
+                        <td>{{comentario.descricao}}</td>
+                        <td>{{comentario.feedback}}</td>
+                        <td>{{comentario.denuncia}}</td>
+                        <td>{{comentario.data}}</td>
+                        <td>{{comentario.usuario_que_comentou}}</td>
+                    </tr>
+                    <br>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="text-center mt-5">
+            <a href="{{ url_for('pagina_configuracoes') }}">
+                <button class="btn btn-sair text-white px-5 py-3 rounded-4 fw-bold">SAIR</button>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
