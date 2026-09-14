@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}TaubaBet - Dashboard{% endblock %}
+{% block head_extra %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-success fw-bold">📊 Painel de Desempenho</h2>
+    <p class="text-muted">Acompanhe suas estatísticas de apostas em tempo real.</p>
+    <hr>
+
+    <!-- Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm border-start border-success border-4">
+                <h6 class="text-muted">Saldo Atual</h6>
+                <h3 class="fw-bold text-success" id="saldo">R$ 0,00</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm border-start border-primary border-4">
+                <h6 class="text-muted">Total de Apostas</h6>
+                <h3 class="fw-bold text-primary" id="totalApostas">0</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm border-start border-warning border-4">
+                <h6 class="text-muted">Vitórias</h6>
+                <h3 class="fw-bold text-warning" id="vitorias">0</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm border-start border-danger border-4">
+                <h6 class="text-muted">Derrotas</h6>
+                <h3 class="fw-bold text-danger" id="derrotas">0</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card p-3 shadow-sm">
+                <h5 class="card-title">📈 Evolução por Aposta (Todos os Usuários)</h5>
+                <div style="position: relative; height: 250px;">
+                    <canvas id="graficoEvolucao"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <h5 class="card-title">Últimas Apostas</h5>
+                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr><th>Data</th><th>Local</th><th>Valor</th><th>Resultado</th></tr>
+                        </thead>
+                        <tbody id="tabelaUltimas">
+                            <tr><td colspan="4" class="text-center">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+{% endblock %}

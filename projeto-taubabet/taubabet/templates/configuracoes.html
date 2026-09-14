@@ -1,137 +1,113 @@
 {% extends 'base.html' %}
-
-{% block title %}TAUBABET - CONFIGURAÇÕES{% endblock %}
-
+{% block title %}Configurações{% endblock %}
+{% block head_extra %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
 {% block content %}
-
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="config-card p-5 text-white w-100">
-
-        <form action="/configurar" method="post">
-            <h2 class="text-center mb-4">
-                ⚙ Configurações {{ " - VIP ⭐ " if esse_usuario_e_vip else "" }}
-            </h2>
-
-            <!-- Cookies -->
-            <div class="config-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5>Ativar cookies</h5>
-                    <div class="descricao">{{ "Ativado" if cookies else "Desativado" }}</div>
-                </div>
-
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" name="cookies" {{ "checked" if cookies else "" }}>
-                </div>
-            </div>
-
-            <!-- Interface Clara -->
-            <div class="config-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5>Interface Escura</h5>
-                    <div class="descricao"></div>
-                </div>
-
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" name="interface_clara" id="tema" onclick="trocarTema()">
-                </div>
-            </div>
-            
-            <!-- Ver apostas -->
-            <a href="{{ url_for('pagina_confirmar_admin_apostas') }}" class="config-item text-decoration-none text-white">
-                <div class="d-flex justify-content-between align-items-center">
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card config-card p-4">
+            <h3 class="text-center mb-4">⚙️ Configurações</h3>
+            <form method="POST" action="{{ url_for('configurar') }}">
+                <div class="config-item d-flex justify-content-between align-items-center">
                     <div>
-                        <h5>Ver apostas</h5>
-                        <small class="text-secondary">
-                            Histórico de apostas realizadas
-                        </small>
+                        <h6>Tema Escuro</h6>
+                        <small class="text-muted">Ative para modo noturno</small>
                     </div>
-
-                    <span class="fs-4">›</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="tema" id="tema" {% if tema == 'dark' %}checked{% endif %}>
+                    </div>
                 </div>
-            </a>
-
-            <!-- Ver comentários -->
-            <a href="{{ url_for('pagina_confirmar_admin_comentarios') }}" class="config-item text-decoration-none text-white">
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="config-item d-flex justify-content-between align-items-center">
                     <div>
-                        <h5>Ver comentários</h5>
-                        <small class="text-secondary">
-                            Comentários feitos no site
-                        </small>
+                        <h6>Cookies</h6>
+                        <small class="text-muted">Manter sessão ativa</small>
                     </div>
-
-                    <span class="fs-4">›</span>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="cookies" id="cookies" {% if cookies == 'ativado' %}checked{% endif %}>
+                    </div>
                 </div>
-            </a>
+                <button type="submit" class="btn btn-voltar w-100 mt-3">Salvar Configurações</button>
+            </form>
+        </div>
 
-            <!-- Configurações do usuário -->
-            <a href="/pagina-visualizar-perfil" class="config-item text-decoration-none text-white">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5>Configurações de usuário</h5>
-                        <small class="text-secondary">
-                            Dados da conta e preferências
-                        </small>
+        <!-- Gamificação -->
+        <div class="card config-card p-4 mt-4">
+            <h4 class="text-center mb-3">🏆 Estatísticas de Apostas</h4>
+            <div id="gamificacaoDados">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <h5>Total</h5>
+                        <span id="gTotal" class="badge bg-primary fs-5">0</span>
                     </div>
-
-                    <span class="fs-4">›</span>
+                    <div class="col-4">
+                        <h5>Vitórias</h5>
+                        <span id="gVitorias" class="badge bg-success fs-5">0</span>
+                    </div>
+                    <div class="col-4">
+                        <h5>Derrotas</h5>
+                        <span id="gDerrotas" class="badge bg-danger fs-5">0</span>
+                    </div>
                 </div>
-            </a>
-
-            {% if not(esse_usuario_e_vip) %}
-                <div class="btn btn-vip mt-4 w-100 text-white">
-                    <a href="{{ url_for('pagina_pagar_vip') }}">
-                        <strong>Pagar VIP ⭐</strong>
-                    </a>
+                <div class="row text-center mt-3">
+                    <div class="col-4">
+                        <h6>% Vitórias</h6>
+                        <span id="gPerc" class="badge bg-info fs-5">0%</span>
+                    </div>
+                    <div class="col-4">
+                        <h6>Maior Vitória</h6>
+                        <span id="gMaiorV" class="badge bg-warning fs-5">R$ 0</span>
+                    </div>
+                    <div class="col-4">
+                        <h6>Maior Derrota</h6>
+                        <span id="gMaiorD" class="badge bg-secondary fs-5">R$ 0</span>
+                    </div>
                 </div>
-                <br><br>
-            {% endif %}
-
-            <div class="text-center">
-                <a href="">
-                    <button class="btn btn-voltar text-white px-5 py-2">
-                        Salvar
-                    </button>
-                </a>
-            </div>
-
-        </form>
-        
-
-        <div class="modal fade" id="modalCookies" tabindex="1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title">Desativar cookies</h5>
+                <div class="row text-center mt-3">
+                    <div class="col-6">
+                        <h6>Sequência</h6>
+                        <span id="gSequencia" class="badge bg-dark fs-5">0</span>
                     </div>
-
-                    <div class="modal-body">
-                        Tem certeza que deseja desativar os cookies?
-                        Você precisará fazer login novamente ao fechar o navegador.
+                    <div class="col-6">
+                        <h6>Nível</h6>
+                        <span id="gNivel" class="badge bg-dark fs-5">1</span>
                     </div>
-
-                    <div class="modal-footer">
-                        <button
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                            Cancelar
-                        </button>
-
-                        <button
-                            class="btn btn-danger"
-                            id="confirmarCookies">
-                            Desativar
-                        </button>
-                    </div>
-
                 </div>
             </div>
         </div>
 
+        <!-- VIP -->
+        <div class="card config-card p-4 mt-4">
+            <h4>⭐ Conta VIP</h4>
+            {% if eh_vip %}
+                <p class="text-success">Você já é VIP!</p>
+            {% else %}
+                <p>Ative a conta VIP para acessar áreas administrativas.</p>
+                <a href="{{ url_for('pagina_pagar_vip') }}" class="btn btn-warning">Ativar VIP (R$ 30,00)</a>
+            {% endif %}
+        </div>
+        <div class="mt-4 text-center">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Voltar</a>
+        </div>
     </div>
 </div>
-
-
-
+{% endblock %}
+{% block scripts %}
+<script>
+    function carregarGamificacao() {
+        fetch('/api/gamificacao')
+            .then(r => r.json())
+            .then(d => {
+                document.getElementById('gTotal').innerText = d.total;
+                document.getElementById('gVitorias').innerText = d.vitorias;
+                document.getElementById('gDerrotas').innerText = d.derrotas;
+                document.getElementById('gPerc').innerText = d.percentual_vitoria + '%';
+                document.getElementById('gMaiorV').innerText = 'R$ ' + d.maior_vitoria.toFixed(2);
+                document.getElementById('gMaiorD').innerText = 'R$ ' + d.maior_derrota.toFixed(2);
+                document.getElementById('gSequencia').innerText = d.sequencia;
+                document.getElementById('gNivel').innerText = d.nivel;
+            });
+    }
+    document.addEventListener('DOMContentLoaded', carregarGamificacao);
+</script>
 {% endblock %}

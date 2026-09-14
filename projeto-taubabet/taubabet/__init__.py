@@ -1,18 +1,22 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
- 
+import os
+
 app = Flask(__name__)
- 
-app.config['UPLOAD_FOLDER'] = 'taubabet/static/uploads'
- 
-app.secret_key = 'chave_secreta'
-app.permanent_session_lifetime = 3600  # 1 hora
- 
-# Configuração do banco de dados SQLite
+app.config['SECRET_KEY'] = 'chave_secreta_muito_segura_para_taubabet'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///taubabet.db'
-db = SQLAlchemy()
-db.init_app(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # 1 hora
+
+db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
- 
-from taubabet import rotas
+
+# Importar as rotas depois de definir app, db e bcrypt
+from . import rotas
+
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)

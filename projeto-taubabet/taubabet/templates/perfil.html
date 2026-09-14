@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Meu Perfil{% endblock %}
+{% block content %}
+<div class="container mt-4 text-white">
+    <h2>Meu Perfil</h2>
+    <form method="POST" action="{{ url_for('atualizar_perfil') }}" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="{{ usuario.foto or '/static/img/default-user.webp' }}" class="img-thumbnail" style="width: 150px;">
+                <div class="mt-2">
+                    <input type="file" name="foto" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <label>Nome</label>
+                    <input type="text" name="nome" class="form-control" value="{{ usuario.nome_completo }}" required>
+                </div>
+                <div class="mb-3">
+                    <label>CPF</label>
+                    <input type="text" name="cpf" class="form-control" value="{{ usuario.cpf }}" required>
+                </div>
+                <div class="mb-3">
+                    <label>Telefone</label>
+                    <input type="text" name="telefone" class="form-control" value="{{ usuario.telefone }}" required>
+                </div>
+                <div class="mb-3">
+                    <label>Nova Senha (opcional)</label>
+                    <input type="password" name="senha" class="form-control" placeholder="Deixe em branco para manter">
+                </div>
+                <div class="mb-3">
+                    <label>Saldo</label>
+                    <input type="text" class="form-control" value="R$ {{ usuario.saldo }}" readonly>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Voltar</a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

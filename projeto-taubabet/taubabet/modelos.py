@@ -1,145 +1,86 @@
+from taubabet import db, bcrypt
 from datetime import datetime
 
-class Usuario: #modelo usuário
+class Usuario(db.Model):
+    __tablename__ = 'usuarios'
+    id = db.Column(db.Integer, primary_key=True)
+    nome_completo = db.Column(db.String(100), nullable=False)
+    cpf = db.Column(db.String(14), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    senha_hash = db.Column(db.String(128), nullable=False)
+    telefone = db.Column(db.String(15))
+    saldo = db.Column(db.Float, default=0.0)
+    foto = db.Column(db.String(200), nullable=True)
+    # Relacionamentos
+    apostas = db.relationship('Aposta', backref='usuario', lazy=True)
+    comentarios = db.relationship('Comentario', backref='usuario', lazy=True)
+    pagamentos = db.relationship('Pagamento', backref='usuario', lazy=True)
+    resgates = db.relationship('Resgate', backref='usuario', lazy=True)
+    vip = db.relationship('UsuarioVip', backref='usuario', uselist=False, lazy=True)
 
-    def __init__(self, id, nome_completo, cpf, email, senha, telefone, saldo, foto):
-        self.id = id
-        self.nome_completo = nome_completo
-        self.cpf = cpf
-        self.email = email
-        self.senha = senha
-        self.telefone = telefone
-        self.saldo = saldo
-        self.foto = foto
-    
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "nome_completo": self.nome_completo,
-            "cpf": self.cpf,
-            "email": self.email,
-            "senha": self.senha,
-            "telefone": self.telefone,
-            "foto": self.foto,
-            "saldo": self.saldo
-        }
-    
-class UsuarioVip:
+    def set_senha(self, senha_plana):
+        self.senha_hash = bcrypt.generate_password_hash(senha_plana).decode('utf-8')
 
-    def __init__(self, id, email, senha, senha_vip):
-        self.id = id
-        self.email = email
-        self.senha = senha
-        self.senha_vip = senha_vip
+    def verificar_senha(self, senha_plana):
+        return bcrypt.check_password_hash(self.senha_hash, senha_plana)
 
     def to_dict(self):
         return {
-            "id": self.id,
-            "email": self.email,
-            "senha": self.senha,
-            "senha_vip": self.senha_vip
-        }
-    
-class Aposta:
-
-    def __init__(self, id, local, valor, tipo, descricao, resultado, valor_final, valor_formatado, cor, usuario_que_apostou):
-        self.id = id
-        self.local = local
-        self.valor = valor
-        self.tipo = tipo
-        self.descricao = descricao
-        self.resultado = resultado
-        self.valor_final = valor_final
-        self.valor_formatado = valor_formatado
-        self.cor = cor
-        self.usuario_que_apostou = usuario_que_apostou
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "local": self.local,
-            "valor": self.valor,
-            "tipo": self.tipo,
-            "descricao": self.descricao,
-            "resultado": self.resultado,
-            "valor_final": self.valor_final,
-            "valor_formatado": self.valor_formatado,
-            "cor": self.cor,
-            "usuario_que_apostou": self.usuario_que_apostou
-        }
-    
-class ApostaContra:
-
-    def __init__(self, id, contra_aposta, valor, descricao, usuario_que_apostou):
-        self.id = id
-        self.contra_aposta = contra_aposta
-        self.valor = valor
-        self.descricao = descricao
-        self.usuario_que_apostou = usuario_que_apostou
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "contra_aposta": self.contra_aposta,
-            "valor": self.valor,
-            "descricao": self.descricao,
-            "usuario_que_apostou": self.usuario_que_apostou
+            'id': self.id,
+            'nome_completo': self.nome_completo,
+            'cpf': self.cpf,
+            'email': self.email,
+            'telefone': self.telefone,
+            'saldo': self.saldo,
+            'foto': self.foto
         }
 
-class Comentario:
+class Aposta(db.Model):
+    __tablename__ = 'apostas'
+    id = db.Column(db.Integer, primary_key=True)
+    local = db.Column(db.String(100), nullable=False)
+    valor = db.Column(db.Float, nullable=False)
+    tipo = db.Column(db.String(50), nullable=False)
+    descricao = db.Column(db.Text)
+    resultado = db.Column(db.String(20))   # 'Vitória' ou 'Derrota'
+    valor_final = db.Column(db.Float, default=0.0)
+    data = db.Column(db.DateTime, default=datetime.now)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
 
-    def __init__(self, id, titulo, descricao, feedback, denuncia, data, usuario_que_comentou):
-        self.id = id
-        self.titulo = titulo
-        self.descricao = descricao
-        self.feedback = feedback
-        self.denuncia = denuncia
-        self.data = data
-        self.usuario_que_comentou = usuario_que_comentou
+class Comentario(db.Model):
+    __tablename__ = 'comentarios'
+    id = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(100), nullable=False)
+    descricao = db.Column(db.Text, nullable=False)
+    feedback = db.Column(db.Text)
+    denuncia = db.Column(db.Text)
+    data = db.Column(db.DateTime, default=datetime.now)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
 
-    def to_dict(self):
-        return {
-            "id" : self.id,
-            "titulo": self.titulo,
-            "descricao": self.descricao,
-            "feedback": self.feedback,
-            "denuncia": self.denuncia,
-            "data": self.data,
-            "usuario_que_comentou": self.usuario_que_comentou
-        }        
-    
-class Pagamento:
+class Pagamento(db.Model):
+    __tablename__ = 'pagamentos'
+    id = db.Column(db.Integer, primary_key=True)
+    valor = db.Column(db.Float, nullable=False)
+    forma_pagamento = db.Column(db.String(50), nullable=False)
+    data = db.Column(db.DateTime, default=datetime.now)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
 
-    def __init__(self, id, valor, forma_de_pagamento, usuario, data):
-        self.id = id
-        self.valor = valor
-        self.forma_de_pagamento = forma_de_pagamento
-        self.usuario = usuario
-        self.data = data
-    
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "valor": self.valor,
-            "forma_de_pagamento": self.forma_de_pagamento,
-            "usuario": self.usuario,
-            "data": self.data
-        }
-    
-class Resgate:
+class Resgate(db.Model):
+    __tablename__ = 'resgates'
+    id = db.Column(db.Integer, primary_key=True)
+    valor = db.Column(db.Float, nullable=False)
+    valor_para_usuario = db.Column(db.Float, nullable=False)
+    data = db.Column(db.DateTime, default=datetime.now)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
 
-    def __init__(self, id, valor, valor_para_usuario, usuario, data):
-        self.id = id
-        self.valor = valor
-        self.valor_para_usuario = valor_para_usuario
-        self.usuario = usuario
-        self.data = data
-    
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "valor": self.valor,
-            "valor_para_usuario": self.valor_para_usuario,
-            "usuario": self.usuario,
-            "data": self.data
-        }
+class UsuarioVip(db.Model):
+    __tablename__ = 'usuarios_vip'
+    id = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), unique=True, nullable=False)
+    senha_vip_hash = db.Column(db.String(128), nullable=False)
+
+    def set_senha_vip(self, senha_plana):
+        self.senha_vip_hash = bcrypt.generate_password_hash(senha_plana).decode('utf-8')
+
+    def verificar_senha_vip(self, senha_plana):
+        return bcrypt.check_password_hash(self.senha_vip_hash, senha_plana)

@@ -90,10 +90,6 @@
                     FAZER APOSTA
                 </h2>
 
-                <a href="{{ url_for('pagina_aposta_contra') }}">
-                    <button class="btn btn-dark">Nova Aposta / Apostar Contra</button>
-                </a>
-
                 <!-- OPCAO NOVA APOSTA -->
                 <div id="formTrue">
                     <form method="POST" action="{{ url_for('apostar', nome_usuario=nome_usuario) }}">
@@ -151,57 +147,12 @@
                 </div>
                 <button id="btnMostrarVideo">Mostrar vídeo</button>
                 
-                <!-- OPCAO APOSTAR CONTRA -->
-                <div id="formFalse" style="display: none;">
-                    <form action="{{ url_for('apostar_contra', nome_usuario=nome_usuario) }}">
-                        <div class="mb-4">
-                            <label class="form-label text-light fw-bold">
-                                Escolha a aposta para apostar contra
-                            </label>
-                            <select name="contra_aposta" class="form-select form-select-lg input-custom" required>
-                                <option value="" disabled selected>
-                                    Selecione uma aposta
-                                </option>
-
-                                {% for aposta in lista_apostas %}
-                                    <option value="{{ aposta.id }}">
-                                        {{ aposta.usuario_que_apostou }} - {{ aposta.local }} - {{ aposta.descricao }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <!-- VALOR -->
-                            <label class="form-label text-light fw-bold">
-                                Valor da contra aposta
-                            </label>
-
-                            <input type="number" name="valor-contra" class="input-aposta form-control form-control-lg input-custom" placeholder="Digite o valor da aposta..." required>
-                        </div>
-
-                        <div class="mb-4">
-                            <!-- DESCRIÇÃO -->
-                            <label class="form-label text-light fw-bold">
-                                Descrição
-                            </label>
-                            <textarea name="descricao-contra" class="input-aposta form-control input-custom" placeholder="Descreva sua contra aposta" required></textarea>
-                        </div>
-
-                        <!-- BOTÃO -->
-                        <div class="text-center mt-5">
-                            <button class="input-aposta-contra btn btn-apostar-contra px-5 py-3 fw-bold fs-5">
-                                ENVIAR APOSTA CONTRA
-                            </button>
-                        </div>
-                    </form>
-                </div>
 
             </div>
 
         </div>
         <div class="text-center mt-5">
-            <a href="{{ url_for('home') }}">
+            <a href="{{ url_for('pagina_entrada') }}">
                 <button class="btn btn-sair text-white px-5 py-3 rounded-4 fw-bold">SAIR</button>
             </a>
         </div>
