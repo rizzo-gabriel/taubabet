@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block title %}Configurações{% endblock %}
+{% block head_extra %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+
+    <!-- Configurações gerais -->
+    <div class="card config-card p-4">
+      <h3 class="text-center mb-4">Configurações</h3>
+      <form method="POST" action="{{ url_for('configurar') }}">
+        <div class="config-item d-flex justify-content-between align-items-center">
+          <div>
+            <h6>Tema Escuro</h6>
+            <small class="text-muted">Ative para modo noturno</small>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="tema" id="tema" {% if tema == 'dark' %}checked{% endif %}>
+          </div>
+        </div>
+        <div class="config-item d-flex justify-content-between align-items-center">
+          <div>
+            <h6>Cookies</h6>
+            <small class="text-muted">Manter sessão ativa</small>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="cookies" id="cookies" {% if cookies == 'atividade' %}checked{% endif %}>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-voltar w-100 mt-3">Salvar Configurações</button>
+      </form>
+    </div>
+
+    <!-- Gamificação -->
+    <div class="card config-card p-4 mt-4">
+      <h3 class="text-center mb-4">Estatísticas</h3>
+      <div class="row text-center">
+        <div class="col-4">
+          <h5>Total</h5>
+          <span id="gTotal" class="badge bg-primary fs-5">0</span>
+        </div>
+        <div class="col-4">
+          <h5>Vitórias</h5>
+          <span id="gVitorias" class="badge bg-success fs-5">0</span>
+        </div>
+        <div class="col-4">
+          <h5>Derrotas</h5>
+          <span id="gDerrotas" class="badge bg-danger fs-5">0</span>
+        </div>
+      </div>
+      <div class="row text-center mt-3">
+        <div class="col-4">
+          <h6>% Vitórias</h6>
+          <span id="gPerc" class="badge bg-info fs-5">0</span>
+        </div>
+        <div class="col-4">
+          <h6>Maior Vitória</h6>
+          <span id="gMaiorV" class="badge bg-warning fs-5">R$ 0</span>
+        </div>
+        <div class="col-4">
+          <h6>Maior Derrota</h6>
+          <span id="gMaiorD" class="badge bg-secondary fs-5">R$ 0</span>
+        </div>
+      </div>
+      <div class="row text-center mt-3">
+        <div class="col-6">
+          <h6>Sequência</h6>
+          <span id="gSequencia" class="badge bg-dark fs-5">0</span>
+        </div>
+        <div class="col-6">
+          <h6>Nível</h6>
+          <span id="gNivel" class="badge bg-dark fs-5">1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ranking -->
+    <div class="card config-card p-4 mt-4">
+      <h4>Ranking</h4>
+      <p class="text-muted">Veja os maiores e melhores apostadores da Taubabet.</p>
+      <a href="{{ url_for('pagina_ranking') }}" class="btn btn-warning w-100">
+        🏆 Ver Hall da Fama
+      </a>
+    </div>
+
+    <!-- Conta VIP -->
+    <div class="card config-card p-4 mt-4">
+      <h4>Conta VIP</h4>
+      {% if eh_vip %}
+        <p class="text-success">Você já é VIP!</p>
+      {% else %}
+        <p>Ative a conta VIP para acessar áreas administrativas.</p>
+        <a href="{{ url_for('pagina_pagar_vip') }}" class="btn btn-warning">Ativar VIP (R$ 30,00)</a>
+      {% endif %}
+    </div>
+    {% if eh_vip %}
+    
+    <!-- Área Administrativa VIP -->
+    <div class="card config-card p-4 mt-4">
+    <h4>Área Administrativa VIP</h4>
+    <p class="text-muted">Acesso restrito. Será pedida sua senha VIP.</p>
+    <div class="d-grid gap-2">
+        <a href="{{ url_for('pagina_confirmar_admin_apostas') }}" class="btn btn-outline-warning">
+        📋 Ver Todas as Apostas
+        </a>
+        <a href="{{ url_for('pagina_confirmar_admin_comentarios') }}" class="btn btn-outline-warning">
+        💬 Ver Todos os Comentários
+        </a>
+    </div>
+    </div>
+    {% endif %}
+
+    <!-- Voltar -->
+    <div class="mt-4 text-center">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Voltar</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function carregarGamificacao() {
+  fetch('/api/gamificacao')
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById('gTotal').innerText = d.total;
+      document.getElementById('gVitorias').innerText = d.vitorias;
+      document.getElementById('gDerrotas').innerText = d.derrotas;
+      document.getElementById('gPerc').innerText = d.percentual_vitoria + '%';
+      document.getElementById('gMaiorV').innerText = 'R$ ' + d.maior_vitoria.toFixed(2);
+      document.getElementById('gMaiorD').innerText = 'R$ ' + d.maior_derrota.toFixed(2);
+      document.getElementById('gSequencia').innerText = d.sequencia;
+      document.getElementById('gNivel').innerText = d.nivel;
+    })
+    .catch(error => console.error('Erro ao carregar gamificação:', error));
+}
+document.addEventListener('DOMContentLoaded', carregarGamificacao);
+</script>
+{% endblock %}

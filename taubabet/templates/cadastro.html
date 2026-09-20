@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - Página de Cadastro{% endblock %}
+
+{% block content%}
+
+<div class="d-flex justify-content-center align-items-center py-5">
+    <!-- <img src="static/logo.png" class="burro-fundo"> -->
+
+    <div class="card cadastro-card p-5">
+
+    <div class="text-center mb-4">
+
+        <img src="static/img/logo.png" class="logo2 mb-3">
+
+        <h1 class="text-white fw-bold">Cadastro</h1>
+
+        <p class="text-light opacity-75">Crie sua conta na TaubaBet</p>
+
+    </div>
+
+    <form action="{{ url_for('cadastrar') }}" method="post">
+       
+        <div class="mb-3">
+            <label class="mb-2" for="nome">Nome completo</label>
+            <input type="text" class="form-control" placeholder="Digite seu nome" name="nome" id="nome" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="mb-2" for="cpf">CPF</label>
+            <input type="text" class="form-control" placeholder="000.000.000-00" name="cpf" id="cpf" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="mb-2" for="email">E-mail</label>
+            <input type="email" class="form-control" placeholder="Digite seu e-mail" name="email" id="email" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="mb-2" for="senha">Senha</label>
+            <input type="text" class="form-control" placeholder="Digite sua senha" name="senha" id="senha" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="mb-2" for="telefone">Telefone</label>
+            <input type="text" class="form-control" placeholder="(11) 99999-9999" name="telefone" id="telefone" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="mb-2" for="saldo">Saldo Inicial</label>
+            <input type="text" class="form-control" placeholder="R$ XXXX,XX" name="saldo" id="saldo" required>
+        </div>
+
+        <button type="submit" class="btn btn-custom text-white w-100 py-3 rounded-4"> Finalizar Cadastro</button>
+
+    </form>
+    <!-- Botão Cancelar -->
+    <div class="text-center mt-5 margin 0px">
+        <a href="{{ url_for('pagina_login') }}">
+            <button class="btn btn-sair text-white px-5 py-3 rounded-4 fw-bold">CANCELAR</button>
+        </a>
+    </div>
+
+  </div>
+</div>
+
+
+{% endblock %}

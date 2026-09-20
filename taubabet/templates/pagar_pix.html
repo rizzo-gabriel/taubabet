@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - CONFIRMAR COMPRA{% endblock %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="config-card1 p-5 text-white">
+        <h1>PAGAR COM PIX</h1>
+
+        <form id="formPix" action="{{ url_for('pagar_com_pix') }}" method="POST">
+
+            <div class="mb-3">
+                <label>Valor</label>
+                <input type="number" class="form-control" placeholder="R$ 50,00" name="valor" id="valor" required>
+            </div>
+
+            <button type="button" class="btn btn-warning w-100" onclick="gerarQR()">
+                Gerar QR Code
+            </button>
+
+            <br><br>
+
+            <!-- QR começa escondido -->
+            <img id="qrcode" style="display:none; width:200px;" 
+                 src="{{ url_for('static', filename='img/qrcode.png') }}" alt="QR Code PIX">
+
+            <button class="btn btn-success mt-4 w-100">
+                Pagar
+            </button>
+
+        </form>
+
+        <br>
+
+        <div class="text-center">
+            <a href="{{ url_for('pagina_adicionar_saldo') }}">
+                <button class="btn btn-primary">Voltar</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

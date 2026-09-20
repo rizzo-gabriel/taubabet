@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - PAGAR VIP{% endblock %}
+
+{% block content %}
+
+
+<div class="vip-conta-wrapper">
+
+    <div class="vip-conta-container">
+
+        <h1 class="vip-conta-titulo">Conta VIP</h1>
+
+        <p class="vip-conta-subtitulo">
+            Confirme os dados para efetuar o pagamento.
+        </p>
+
+        <div class="vip-conta-valor">
+            Valor da Conta VIP:<br>
+            <span class="vip-conta-preco">R$ 29,90</span>
+        </div>
+
+        <form action="{{ url_for('pagar_conta_vip') }}" method="POST">
+
+            <label class="vip-conta-label">Confirme seu e-mail</label>
+            <input class="vip-conta-input" type="email" name="email" placeholder="examplo@gmail.com" required>
+
+            <label class="vip-conta-label">Confirme sua Senha</label>
+            <input class="vip-conta-input" type="password" name="senha" placeholder="Sua senha aqui" required>
+            
+            <label class="vip-conta-label">Sua Senha VIP</label>
+            <input class="vip-conta-input" type="password" name="senha_vip" placeholder="••••••••" required>
+
+             <label class="vip-conta-label">Confirme sua Senha VIP</label>
+            <input class="vip-conta-input" type="password" name="confirmar_senha_vip" placeholder="••••••••" required>
+
+            <button class="vip-conta-botao" type="submit">
+                ⭐ Pagar Conta VIP ⭐
+            </button>
+
+        </form>
+
+        <div class="text-center">
+            <a href="{{ url_for('pagina_configuracoes') }}">
+                <button class=" btn sub-cancelar">CANCELAR</button>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

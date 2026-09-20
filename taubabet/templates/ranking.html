@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+
+{% block title %}TAUBABET - Hall da Fama{% endblock %}
+
+{% block head_extra %}
+<style>
+  /* Animações */
+  @keyframes glow {
+    0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+    100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ranking-card {
+    background: rgba(20, 30, 50, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    transition: transform 0.3s ease;
+  }
+  .ranking-card:hover {
+    transform: scale(1.01);
+  }
+  .ranking-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    letter-spacing: 2px;
+  }
+  .ranking-table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+  .ranking-table tbody tr {
+    background: rgba(255,255,255,0.03);
+    border-radius: 15px;
+    transition: all 0.3s;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+  .ranking-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+  .ranking-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+  .ranking-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+  .ranking-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+  .ranking-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+  .ranking-table tbody tr:nth-child(6) { animation-delay: 0.6s; }
+  .ranking-table tbody tr:nth-child(7) { animation-delay: 0.7s; }
+  .ranking-table tbody tr:nth-child(8) { animation-delay: 0.8s; }
+  .ranking-table tbody tr:nth-child(9) { animation-delay: 0.9s; }
+  .ranking-table tbody tr:nth-child(10) { animation-delay: 1.0s; }
+  .ranking-table tbody tr:hover {
+    background: rgba(255, 215, 0, 0.1);
+    transform: scale(1.02);
+  }
+  .ranking-table td, .ranking-table th {
+    padding: 14px 10px;
+    border: none;
+    vertical-align: middle;
+  }
+  .ranking-table img {
+    border: 2px solid rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+  }
+  .medal {
+    font-size: 2rem;
+    filter: drop-shadow(0 0 10px gold);
+  }
+  .vip-badge {
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+    color: #1a1a2e;
+    font-weight: bold;
+    padding: 4px 14px;
+    border-radius: 30px;
+    display: inline-block;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    animation: glow 2s infinite;
+  }
+  .common-badge {
+    background: #3a3a5a;
+    color: #aaa;
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-weight: 500;
+  }
+  .progress-bar-custom {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 5px;
+  }
+  .progress-bar-custom .fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #f7971e, #ffd200);
+    transition: width 1.5s ease;
+  }
+  .glow-text {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  }
+  .btn-back {
+    background: linear-gradient(135deg, #2b2b4a, #1a1a2e);
+    border: 1px solid rgba(255,215,0,0.3);
+    color: #ffd700;
+    padding: 12px 40px;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s;
+  }
+  .btn-back:hover {
+    background: #ffd700;
+    color: #1a1a2e;
+    box-shadow: 0 0 30px rgba(255,215,0,0.6);
+    transform: scale(1.05);
+  }
+  .crown-icon {
+    font-size: 1.4rem;
+    margin-right: 5px;
+    filter: drop-shadow(0 0 8px gold);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h1 class="text-white display-3 fw-bold glow-text">
+      🏆 Hall da Fama
+    </h1>
+    <p class="text-light opacity-75 fs-5">
+      Os maiores e melhores apostadores da Taubabet
+    </p>
+  </div>
+
+  <div class="row g-4">
+    <!-- Coluna: Maiores Apostadores -->
+    <div class="col-lg-6">
+      <div class="ranking-card h-100">
+        <h2 class="ranking-title text-center text-warning mb-4">
+          💰 Maiores Apostadores
+        </h2>
+        <div class="table-responsive">
+          <table class="table ranking-table text-white">
+            <thead>
+              <tr class="text-secondary" style="border-bottom: 2px solid rgba(255,215,0,0.2);">
+                <th>#</th>
+                <th>Usuário</th>
+                <th>Total Apostado</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in maiores_apostadores %}
+              <tr>
+                <td>
+                  {% if loop.index == 1 %} <span class="medal">🥇</span>
+                  {% elif loop.index == 2 %} <span class="medal">🥈</span>
+                  {% elif loop.index == 3 %} <span class="medal">🥉</span>
+                  {% else %} <span class="text-muted">#{{ loop.index }}</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img src="{{ '/' + item.usuario.foto if item.usuario.foto else '/static/img/default-user.webp' }}"
+                         alt="Foto de {{ item.usuario.nome_completo }}"
+                         class="rounded-circle me-2"
+                         style="width: 40px; height: 40px; object-fit: cover;">
+                    <div>
+                      <strong>{{ item.usuario.nome_completo }}</strong>
+                      {% if item.is_vip %}
+                        <span class="crown-icon">👑</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-bold text-warning">R$ {{ item.total_apostado|round(2) }}</span>
+                  <div class="progress-bar-custom">
+                    <div class="fill" style="width: {{ (item.total_apostado / maiores_apostadores[0].total_apostado * 100) if maiores_apostadores else 0 }}%;"></div>
+                  </div>
+                </td>
+                <td>
+                  {% if item.is_vip %}
+                    <span class="vip-badge"><i class="fas fa-crown"></i> VIP</span>
+                  {% else %}
+                    <span class="common-badge">Comum</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% else %}
+              <tr><td colspan="4" class="text-center">Nenhuma aposta registrada.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coluna: Melhores Apostadores (por ganhos) -->
+    <div class="col-lg-6">
+      <div class="ranking-card h-100">
+        <h2 class="ranking-title text-center text-success mb-4">
+          🎯 Melhores Apostadores
+        </h2>
+        <div class="table-responsive">
+          <table class="table ranking-table text-white">
+            <thead>
+              <tr class="text-secondary" style="border-bottom: 2px solid rgba(0,255,100,0.3);">
+                <th>#</th>
+                <th>Usuário</th>
+                <th>Total Ganho</th>
+                <th>Vitórias</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in melhores_apostadores %}
+              <tr>
+                <td>
+                  {% if loop.index == 1 %} <span class="medal">🥇</span>
+                  {% elif loop.index == 2 %} <span class="medal">🥈</span>
+                  {% elif loop.index == 3 %} <span class="medal">🥉</span>
+                  {% else %} <span class="text-muted">#{{ loop.index }}</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img src="{{ '/' + item.usuario.foto if item.usuario.foto else '/static/img/default-user.webp' }}"
+                         alt="Foto de {{ item.usuario.nome_completo }}"
+                         class="rounded-circle me-2"
+                         style="width: 40px; height: 40px; object-fit: cover;">
+                    <div>
+                      <strong>{{ item.usuario.nome_completo }}</strong>
+                      {% if item.is_vip %}
+                        <span class="crown-icon">👑</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-bold text-success">R$ {{ item.total_ganho|round(2) }}</span>
+                  <div class="progress-bar-custom">
+                    <div class="fill" style="width: {{ (item.total_ganho / melhores_apostadores[0].total_ganho * 100) if melhores_apostadores else 0 }}%;"></div>
+                  </div>
+                </td>
+                <td>
+                  <span class="badge bg-info">{{ item.vitorias }}</span>
+                </td>
+                <td>
+                  {% if item.is_vip %}
+                    <span class="vip-badge"><i class="fas fa-crown"></i> VIP</span>
+                  {% else %}
+                    <span class="common-badge">Comum</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% else %}
+              <tr><td colspan="5" class="text-center">Nenhuma vitória registrada.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botão Voltar -->
+  <div class="text-center mt-5">
+    <a href="{{ url_for('pagina_configuracoes') }}" class="btn btn-back">
+      ← Voltar para Configurações
+    </a>
+  </div>
+</div>
+{% endblock %}

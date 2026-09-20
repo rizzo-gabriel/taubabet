@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title%}TAUBABET - ADICIONAR SALDO{% endblock %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="config-card1 p-5 text-white">
+        <h1 class="text-center">Adicionar saldo</h1>
+        <br><br>
+        <h3 class="text-center">Selecione o método de pagamento</h3>
+        <br>
+        <form action="{{ url_for('identificar_forma_pagamento') }}" method="POST" class="text-center">
+            <select class="form-select input-custom" name="forma-de-pagamento">
+                <option value="pix">PIX</option>
+                <option value="cartao_credito">Cartão de Crédito</option>
+                <option value="cartao_debito">Cartão de Débito</option>
+                <option value="comprovante">Enviar comprovante</option>
+            </select>
+            <br>
+            <input type="submit" value="Enviar" class="btn btn-primary sub-forma-de-pagamento">
+        </form>
+
+        <div class="text-center">
+            <a href="{{ url_for('perfil') }}">
+                <button class=" btn sub-cancelar">CANCELAR</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

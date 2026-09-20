@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}TAUBABET - LISTA APOSTAS{% endblock %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="config-card p-5 text-white">
+    <h2 class="text-center">Lista de Apostas</h2>
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle">
+        <thead class="thead_div_aposta">
+          <tr>
+            <th>ID</th>
+            <th>Local</th>
+            <th>Valor</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th>Resultado</th>
+            <th>Valor Final</th>
+            <th>Nome do Usuário</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for aposta in lista_apostas %}
+          <tr>
+            <td>{{ aposta.id }}</td>
+            <td>{{ aposta.local }}</td>
+            <td>R$ {{ "%.2f"|format(aposta.valor) }}</td>
+            <td>{{ aposta.tipo }}</td>
+            <td>{{ aposta.descricao }}</td>
+            <td>{{ aposta.resultado }}</td>
+            <td>R$ {{ "%.2f"|format(aposta.valor_final) }}</td>
+            <td>{{ aposta.usuario.nome_completo }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="text-center mt-5">
+      <a href="{{ url_for('pagina_configuracoes') }}" class="btn btn-sair text-white px-5 py-3 rounded-4 fw-bold">
+        SAIR
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
